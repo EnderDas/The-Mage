@@ -52,7 +52,6 @@ Start
     <-
 """
 
-
 #os.system('mode 40,11')
 
 def clear():
@@ -179,7 +178,7 @@ class Weapon:
 
     UPGRADES = {
         "sharp": {
-            "upgrade": "damage",
+            "upgrade": "attack",
             "id": 1,
             "effect": 1,
             "max": 10,
@@ -207,10 +206,11 @@ class Weapon:
             "types": [
                 "sword",
                 "mace"
+                "javlin"
             ]
         },
         "braced": {
-            "upgrade": "damage",
+            "upgrade": "attack",
             "id": 4,
             "effect": 2,
             "max": 6,
@@ -257,6 +257,35 @@ class Weapon:
 
     def _Cost(self):
         return int((self.level*2)+(5*len(self.upgrades))+(2*self.TYPES[self.type]) + (10 if self.custom is True else 0))
+
+    @property
+    def attack(self):
+        attack = 0
+        attack += self.TYPES[self.type]
+        attack *= self.level
+        if self.test_for_upg('sharp') is True:
+            attack += self.upgrades['sharp']
+        if self.test_for_upg('braced') is True:
+            attack += (self.upgrades['braced']*2)
+        return attack
+
+    @property
+    def limb(self):
+        limb = 0
+        limb += self.TYPES[self.type]
+        limb = limb + (limb * (self.level//2))
+        if self.test_for_upg("plated") is True:
+            limb += self.upgrades['plated']
+        return limb
+
+    @property
+    def armor(self):
+        armor = 0
+        if self.test_for_upg('hardened') is True:
+            armor += self.upgrades['hardened']
+        if self.test_for_upg('treated') is True:
+            armor += self.upgrades['treated']
+        return armor
 
     def test_for_upg(self, upg):
         if upg in self.upgrades.keys():
@@ -342,13 +371,78 @@ class Item:
         }
         return thing
 
-class Npc:
+class Armor: #Still Planning
+
+    TYPES = {
+        "cloth": 1,
+        "iron": 3,
+        "steel": 4,
+        "strange": 6,
+        "magic": 8,
+        "holy": 9
+    }
+
+    TYPES_STRENGTH = {
+        "soft": 1,
+        "unsafe": 2,
+        "sturdy": 3,
+        "harder": 4,
+        "hardest": 5,
+        "strong": 6
+    }
 
     def __init__(self, thing):
         self.dict = thing
-        self.name = thing['name']
-        self.desc = thing['desc']
-        self.merch = ShopCycle(thing['merch'])
+        self.load()
+
+    def load(self):
+        self.name = self.dict['name']
+        self.type = self.dict['type']
+        self.level = self.dict['level']
+        self.exp = self.dict['exp']
+        self.stng = self.dict['stng']
+
+    @property
+    def defence(self):
+        defence = 0
+        defence += self.TYPES[self.type]
+        defence *= self.TYPES_STRENGTH[self.stng]
+        return defence
+
+    def _Cost(self):
+        return int((self.level*2)+(5+self.TYPES[self.type]))
+
+    def get_dict(self):
+        thing = {
+            "name": self.name,
+            "type": self.type,
+            "stng": self.stng
+        }
+        return thing
+
+class Npc:
+
+    def __init__(self, name):
+        self.file = f'data\\npc\\{name}.json'
+        with open(self.file, 'r') as fp:
+            self.dict = ujson.load(fp)
+        self.name = name
+        self.desc = self.dict['desc']
+        self.merch = self.load_cycle()
+
+    def get_dict(self):
+        thing = {
+            "name": self.name,
+            "desc": self.desc,
+            "items": [get_dict(item) for item in self.merch.items()],
+            "weapons": [get_dict(weapon) for weapon in self.merch.weapons()]
+        }
+        return thing
+
+    def load_cycle(self):
+        items = [{'object': Item(item)} for item in self.dict['items']]
+        weapons = [{'object': Weapon(weapon)} for weapon in self.dict['weapons']]
+        return ShopCycle(items, weapons)
 
     def buy_item(self, indice, player):
         try:
@@ -390,23 +484,25 @@ class Npc:
         player.save_true()
         self.merch.add_weapon(weapon)
 
-    def items(self):
+    @property
+    def _items(self):
         if self.merch.items is None:
             return None
         else:
             for item in self.merch.items:
-                yield item['object']
+                yield item
 
-    def weapons(self):
+    @property
+    def _weapons(self):
         if self.merch.weapons is None:
             return None
         else:
             for weapon in self.merch.weapons:
-                yield weapon['object']
+                yield weapon
 
-class ShopCycle:
+class ShopCycle: #for Npc
 
-    def __init__(self, item_list=list(), weapon_list=list):
+    def __init__(self, item_list=list(), weapon_list=list()):
         """
         item_list
             [
@@ -421,10 +517,10 @@ class ShopCycle:
 
         #item_things
         def add_item(self, obj):
-            self.items.append({"object": obj, "cost": cost(obj), "status": BUYABLE})
+            self.items.append(obj)
 
         def add_weapon(self, obj):
-            self.weapons.append({"object": obj, "cost": cost(obj), "status": BUYABLE})
+            self.weapons.append(obj)
 
         def buy_item(self, indice):
             item = self.items[indice]
@@ -458,3 +554,6 @@ artifact = Item({
 })
 
 p = Player("1")
+
+class Game:
+    pass
