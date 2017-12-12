@@ -1,0 +1,77 @@
+{
+    "name": "Player",
+    "health": 100,
+    "level": 1,
+    "energy": 0,
+    "equipted": {
+            "armor": {
+                    "head": {
+                        "name": "Basic Helmet",
+                        "type": 1,
+                        "material": 1,
+                        "level": 1,
+                        "modifiers": {}
+                    },
+                    "torso": {
+                        "name": "Basic Chestplate",
+                        "type": 2,
+                        "material": 1,
+                        "level": 1,
+                        "modifiers": {}
+                    },
+                    "arms": {
+                        "name": "Basic Gauntlets",
+                        "type": 3,
+                        "material": 1,
+                        "level": 1,
+                        "modifiers": {}
+                    },
+                    "legs": {
+                        "name": "Basic Leggings",
+                        "type": 4,
+                        "material": 1,
+                        "level": 1,
+                        "modifiers": {}
+                    }
+            },
+            "item_one": {
+                "name": "item",
+                "type": 1,
+                "lore": null,
+                "modifiers": {}
+            },
+            "item_two": {
+                "name": "item",
+                "type": 1,
+                "lore": null,
+                "modifiers": {}
+            },
+            "item_three": {
+                "name": "item",
+                "type": 1,
+                "lore": null,
+                "modifiers": {}
+            },
+            "weapon": {
+                "name": "Basic Sword",
+                "type": 1,
+                "level": 1,
+                "modifiers": {},
+                "material": 1,
+                "skills": [
+                    {
+                        "name": "Skill",
+                        "range": 5,
+                        "desc": null,
+                        "buff": 0
+                    }
+                ]
+            }
+    },
+    "money": 0,
+    "inventory": {
+        "items": [],
+        "weapons": [],
+        "armors": []
+    }
+}
