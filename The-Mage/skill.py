@@ -10,9 +10,9 @@ Skill
 """
 
 TYPES = [
-"Normal",
-"Power",
-"Effect"
+    "Normal",
+    "Power",
+    "Effect"
 ]
 
 NAME = {
