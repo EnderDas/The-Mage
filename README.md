@@ -1,2 +1,4 @@
-# The-Mage
-first of my command based text games
+# The Mage
+
+## What is it...
+The Mage is going to be a large and complex text adventure game...

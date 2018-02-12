@@ -110,7 +110,7 @@ class RandWeapon(Weapon):
         _name = name
         _level = rng(stop=level) if level <= 20 else 20
         _style = RandStyle(_level)
-        _power = rng(start=level+5, stop=level+10)
+        _power = rng(start=_level+5, stop=_level+10)
         super().__init__(
             name = _name,
             level = _level,
