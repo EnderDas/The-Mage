@@ -1,7 +1,7 @@
 #inventory
-import frame
-from weapon import _Weapon
-from armor import _Armor
+from .frame import Frame
+from .weapon import _Weapon
+from .armor import _Armor
 
 class Inventory:
 
@@ -11,7 +11,7 @@ class Inventory:
 
     @property
     def frame(self):
-        return frame.Frame(self).dict
+        return Frame(self).dict
 
 class _Inventory(Inventory):
 

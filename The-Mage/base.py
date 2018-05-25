@@ -1,5 +1,0 @@
-#base
-
-#LEVELS
-MAX_LEVEL = 50
-MAX_WEP_LEVEL = 20

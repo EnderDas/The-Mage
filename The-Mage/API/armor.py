@@ -1,7 +1,6 @@
 #armor
-from random import uniform
-import base
-import frame
+from random import uniform as _uniform
+from .frame import Frame
 
 """
 Armor
@@ -11,7 +10,7 @@ Armor
 """
 
 def rng(start = 0, stop = 5):
-    return round(uniform(start, stop))
+    return round(_uniform(start, stop))
 
 class Armor:
 
@@ -22,7 +21,7 @@ class Armor:
 
     @property
     def frame(self):
-        return frame.Frame(self).dict
+        return Frame(self).dict
 
 class _Armor(Armor):
 

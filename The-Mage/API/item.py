@@ -1,6 +1,6 @@
 #item
 
-import frame
+from .frame import Frame
 
 """
 Item
@@ -22,7 +22,7 @@ class Item:
 
     @property
     def frame(self):
-        return frame.Frame(self).dict
+        return Frame(self).dict
 
 class _Item(Item):
 

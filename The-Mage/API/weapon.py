@@ -1,8 +1,8 @@
-from random import uniform
-from item import Item
-from skill import RandSkill, _Skill
-import base
-import frame
+from random import uniform as _uniform
+from .item import Item
+from .skill import RandSkill, _Skill
+from .frame import Frame
+MAX_WEP_LEVEL = 20
 """
 Weapon
 | name :str:
@@ -26,7 +26,7 @@ def differ(val, mval, itera, tira):
         return differ(val, mval, itera, tira)
 
 def rng(start = 0, stop = 5):
-    return round(uniform(start, stop))
+    return round(_uniform(start, stop))
 
 class Style(Item):
     TYPES = [
@@ -88,7 +88,7 @@ class Weapon:
 
     @property
     def frame(self):
-        return frame.Frame(self).dict
+        return Frame(self).dict
 
 class _Weapon(Weapon):
 

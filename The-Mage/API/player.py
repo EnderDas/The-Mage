@@ -1,33 +1,33 @@
 #player
-from BlueDB.blue2 import Blue
-import inventory
-import weapon
-import armor
-import frame
+from BlueDB.blue2 import Blue as _Blue
+from .inventory import Inventory, _Inventory
+from .weapon import _Weapon, RandWeapon
+from .armor import _Armor, RandArmor
+from .frame import Frame
 
 class Player:
 
     def __init__(self, name):
         self.name = name
-        db = Blue(self.name)
+        db = _Blue(self.name)
         try:
-            self.weapon = weapon._Weapon(db['weapon'])
-            self.armor = armor._Armor(db['armor'])
-            self.inventory = inventory._Inventory(db['inventory'])
+            self.weapon = _Weapon(db['weapon'])
+            self.armor = _Armor(db['armor'])
+            self.inventory = _Inventory(db['inventory'])
             self.level = db['level']
             self.money = db['money']
             self.meta = db['meta']
         except:
-            self.weapon = weapon.RandWeapon(1, "Starter Weapon")
-            self.armor = armor.RandArmor(1, "Starter Armor")
-            self.inventory = inventory.Inventory()
+            self.weapon = RandWeapon(1, "Starter Weapon")
+            self.armor = RandArmor(1, "Starter Armor")
+            self.inventory = Inventory()
             self.level = 1
             self.money = 0
             self.meta = {}
             db.update(self.frame)
 
     def save(self):
-        db = Blue(self.name)
+        db = _Blue(self.name)
         db.update(self.frame)
 
     @property
@@ -44,7 +44,7 @@ class Player:
 
     @property
     def frame(self):
-        return frame.Frame(self).dict
+        return Frame(self).dict
 
     def __end__(self):
         self.save()

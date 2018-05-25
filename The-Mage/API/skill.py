@@ -1,7 +1,7 @@
 #skill
-from base import MAX_LEVEL
-from random import uniform
-import frame
+MAX_LEVEL = 50
+from random import uniform as _uniform
+from .frame import Frame
 """
 Skill
 | name
@@ -59,7 +59,7 @@ class Skill:
 
     @property
     def frame(self):
-        return frame.Frame(self).dict
+        return Frame(self).dict
 
 class _Skill(Skill):
 
@@ -74,7 +74,7 @@ class _Skill(Skill):
         )
 
 def rng(start = 0, stop = 5):
-    return round(uniform(start, stop))
+    return round(_uniform(start, stop))
 
 class RandSkill(Skill):
 
